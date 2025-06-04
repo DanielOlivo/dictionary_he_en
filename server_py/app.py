@@ -12,7 +12,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 port = os.getenv('PORT') 
+host_string = os.getenv('HOSTSTRING')
+
 port = port if port else 8000
+host_string = host_string if host_string else '127.0.0.1'
 
 from rate_limit import limiter, apply_limiter
 
@@ -49,4 +52,4 @@ async def serve_frontend(request: Request, full_path: str):
     return {"error": "index.html not found"}, 404
 
 if __name__ == '__main__':
-    uvicorn.run("main:app", host="127.0.0.1", port=port)
+    uvicorn.run("main:app", host=host_string, port=port)
