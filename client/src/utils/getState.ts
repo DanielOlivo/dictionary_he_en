@@ -6,6 +6,7 @@ export function getState() {
 
     const empty: RootState = {
         dict: {
+            serverStatus: false,
             pending: false,
             query: '',
             queries: {}

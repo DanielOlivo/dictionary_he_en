@@ -28,3 +28,20 @@ export const requestQuery = createAsyncThunk(
         return result
     }
 )
+
+export const checkServer = createAsyncThunk(
+    'checkServer',
+    async (): Promise<boolean> => {
+        try{
+            const url = new URL('/status', baseUrl)
+            const response = await axios.get(url.href)
+            console.log(response)
+            return response && response.status === 200
+        }
+        catch(error){
+            if(error instanceof Error)
+                console.log(error.message)
+            return false
+        }
+    }
+)

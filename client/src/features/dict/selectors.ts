@@ -6,6 +6,8 @@ export const selectQuery = (state: RootState) => state.dict.query
 export const selectQueries = (state: RootState) => state.dict.queries
 export const selectIsPending = (state: RootState) => state.dict.pending
 
+export const selectServerStatus = (state: RootState) => state.dict.serverStatus
+
 export const selectTerms = createSelector(
     selectQuery,
     selectQueries,

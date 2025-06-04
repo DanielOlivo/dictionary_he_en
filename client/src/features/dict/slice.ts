@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { requestQuery } from "./thunks";
+import { checkServer, requestQuery } from "./thunks";
 
 export interface Card {
     part: string
@@ -12,12 +12,14 @@ export interface Card {
 type Queries = { [P: string]: Card[] }
 
 interface DictState {
+    serverStatus: boolean
     pending: boolean
     query: string
     queries: Queries
 }
 
 const initialState: DictState = {
+    serverStatus: false,
     pending: false,
     query: "",
     queries: {}
@@ -45,6 +47,13 @@ export const slice = createSlice({
                 if(query){
                     state.queries[query] = cards
                 }
+            })
+
+            .addCase(checkServer.rejected, (state) => {
+                state.serverStatus = false
+            })
+            .addCase(checkServer.fulfilled, (state, action) => {
+                state.serverStatus = action.payload
             })
     }
 })

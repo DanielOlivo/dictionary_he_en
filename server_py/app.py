@@ -44,6 +44,11 @@ if frontend_dist.is_dir():
 
 app.include_router(term_router, prefix='/api')
 
+@app.get("/status")
+@limiter.limit("10/second")
+async def check_status(request: Request):
+    return {"message", "ok"}, 200
+
 @app.get('/{full_path:path}')
 @limiter.limit("5/second")
 async def serve_frontend(request: Request, full_path: str):
@@ -52,6 +57,7 @@ async def serve_frontend(request: Request, full_path: str):
         if index_file.is_file():
             return FileResponse(index_file)
     return {"error": "index.html not found"}, 404
+
 
 if __name__ == '__main__':
     uvicorn.run("main:app", host=host_string, port=port)
