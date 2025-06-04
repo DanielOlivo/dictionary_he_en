@@ -23,18 +23,20 @@ app.add_middleware(
 base_dir = Path(__file__).resolve().parent
 frontend_dist = base_dir.parent / 'client' / 'dist'
 
-app.mount(
-    '/assets',
-    StaticFiles(directory=str(frontend_dist / 'assets' )),
-    name='assets'
-)
+if frontend_dist.is_dir():
+    app.mount(
+        '/assets',
+        StaticFiles(directory=str(frontend_dist / 'assets' )),
+        name='assets'
+    )
 
 app.include_router(term_router, prefix='/api')
 
 @app.get('/{full_path:path}')
 @limiter.limit("5/second")
 async def serve_frontend(request: Request, full_path: str):
-    index_file = frontend_dist / 'index.html'
-    if index_file.is_file():
-        return FileResponse(index_file)
+    if frontend_dist.is_dir():
+        index_file = frontend_dist / 'index.html'
+        if index_file.is_file():
+            return FileResponse(index_file)
     return {"error": "index.html not found"}, 404
