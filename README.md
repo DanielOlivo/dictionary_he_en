@@ -2,6 +2,8 @@
 
 Simple online hebrew - english dictionary.
 
+[Live demo](https://he-en-dict.onrender.com/)
+
 ## Stack
 
 - **Backend** - fastapi, peewee
