@@ -14,7 +14,7 @@ load_dotenv()
 port = os.getenv('PORT') 
 host_string = os.getenv('HOSTSTRING')
 
-port = port if port else 8000
+port = int(port) if port else 8000
 host_string = host_string if host_string else '127.0.0.1'
 
 print(f"port {port}; host {host_string}")
