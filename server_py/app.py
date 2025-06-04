@@ -7,6 +7,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+port = os.getenv('PORT') 
+port = port if port else 8000
+
 from rate_limit import limiter, apply_limiter
 
 
@@ -40,3 +47,6 @@ async def serve_frontend(request: Request, full_path: str):
         if index_file.is_file():
             return FileResponse(index_file)
     return {"error": "index.html not found"}, 404
+
+if __name__ == '__main__':
+    uvicorn.run("main:app", host="127.0.0.1", port=port)
